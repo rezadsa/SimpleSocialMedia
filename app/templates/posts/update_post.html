@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title%}{{form.title.data[:20]}}{% endblock title%}
+
+{% block content%}
+
+<div class="d-flex  align-items-center justify-content-center  overflow-auto mt-2 w-100 " style="height:90%" >
+    <div class="bg-secondary w-75 h-100 p-5 overflow-auto rounded-3 border border-light border-3" style="box-shadow: inset 0px 0px 30px 10px rgb(177, 240, 179);">
+
+        
+    <form action="" method="POST" class="m-4">
+        {{form.csrf_token }}
+        {{form.title.label(class='form-control-label mt-3')}}{{form.title(class='form-control')}}
+        {{form.content.label(class='form-control-lable mt-3')}}{{form.content(class='form-control',style='height:300px;')}}
+        <input type="submit" value="Update" class="btn btn-outline-info mt-2 d-block">
+    </form>
+</div>
+</div>
+{% endblock content%}

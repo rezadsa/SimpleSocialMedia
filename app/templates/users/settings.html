@@ -1,0 +1,102 @@
+{% extends 'base.html' %} {% if current_user.is_authenticated %} {% block
+tilte%} {% if current_user.username %} {{current_user.username}} {% else %} {{
+current_user.email}} {% endif %} {% endblock %} {% block content %}
+
+{% if not current_user.username %}
+<div class="alert alert-info text-center alert-dismissible show fade mt-2 fs-5" role="alert" >
+Please set username, otherwise other pepole wont be able to see your profile<button
+type="button"
+class="btn-close"
+data-bs-dismiss="alert"
+aria-label="Close"
+></button>
+
+</div>
+{% endif%}
+
+<div
+  class="d-flex align-items-center justify-content-center overflow-auto h-75 w-100 mb-3"
+>
+  <div
+    class="bg-secondary w-100 h-90 d-flex rounded-3 border border-light border-3"
+    style="box-shadow: inset 0px 0px 30px 10px rgb(243, 243, 246)"
+  >
+    <div class="card m-5  bg-body-tertairy w-25 border-3 " style="box-shadow: inset 0px 0px 30px 10px rgb(87, 87, 90)">
+      <div class="card-body">
+        <p class="card-title badge bg-primary d-block fs-5">{% if current_user.phone %}{{current_user.phone}}{% else %}
+          You havent set phone yet {% endif %}</p>
+        <p class="card-title badge bg-success d-block fs-5">
+          {% if current_user.username %} {{current_user.username}} {% else %}
+          You havent set username yet {% endif %}
+        </p>
+
+        <p class="card-title badge bg-success d-block fs-6">
+          {% if current_user.email %} {{current_user.email}} {% else %}
+          You havent set email yet {% endif %}
+        </p>
+        <div class="card-text">
+          <div class="border border-warning border-4 rounded my-4 text-center">
+            <p>registred :</p> 
+            <p>{{current_user.create_at}}</p>
+          </div>
+          <div class="border border-warning border-4 rounded my-4 text-center">
+            <p>Last update :</p>
+            {{current_user.update_at}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card m-5  bg-body-tertairy w-25 border-3 " style="box-shadow: inset 0px 0px 30px 10px rgb(87, 87, 90)">
+      <div class="card-body">
+        <p class="card-title text-light badge bg-primary d-block fs-6">Update </p>
+        <hr>
+<form action="" method="POST">
+  {{form.csrf_token}}
+  
+  <!-- {{form.username.label(class='form-control-label')}} -->
+  {{form.email(class='form-control ',placeholder='Email Addresss')}}
+  {{form.phone(class='form-control  my-3 ',placeholder='Phone Number')}}
+
+  {{form.username(class='form-control ',placeholder='User Name')}}
+  <!-- {{form.password.label(class='form-control-label')}} -->
+  {{form.password(class='form-control my-3',placeholder='Password')}}
+  <!-- {{form.verify_pass.label(class='form-control-label')}} -->
+  {{form.verify_pass(class='form-control',placeholder='Confirm password')}}
+  <div class="d-grid gap-2" >
+  <input type="submit" value="Update" class="btn btn-outline-danger border-3 mt-4 ">
+</div>
+</form>
+ 
+      </div>
+    </div>
+
+
+
+    <div class="card m-5  bg-body-tertairy w-25 border-3 " style="box-shadow: inset 0px 0px 30px 10px rgb(87, 87, 90)">
+      <div class="card-body">
+        <p class="card-title text-light badge bg-primary d-block fs-6">Access Control</p>
+        <hr>
+<form action="{{url_for('/users.access_control')}}" method="POST">
+  {{access_form.csrf_token}}
+  {{access_form.private.label(class='form-check-label')}}{{access_form.private(class='form-check-input float-end border border-3 border-warning')}}
+  <hr>
+  {{access_form.phone_show.label(class='form-check-label')}}{{access_form.phone_show(class='form-check-input float-end border border-3 border-warning')}}
+  <hr>
+  <div class="d-grid gap-2" >
+  <input type="submit" value="Update" class="btn btn-outline-danger border-3 mt-4 ">
+  
+</div>
+</form>
+ 
+      </div>
+    </div>
+
+
+
+
+  </div>
+</div>
+
+{% endblock %} {% endif%}

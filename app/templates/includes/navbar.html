@@ -1,0 +1,50 @@
+
+<nav class="navbar bg-secondary  rounded-2 border border-light border-3" style="box-shadow: inset 0px 0px 30px 10px rgb(233, 233, 238);">
+    <div class="container-fluid d-flex justify-content-between" >
+     
+      <div >
+      <a class="btn btn-outline-danger border border-danger border-2" href="{{url_for('home')}}">Home</a>
+      
+
+      {% if current_user.is_authenticated%}
+      <a class="btn btn-outline-danger border border-danger border-2" href="{{url_for('/users.logout')}}">Logout</a>
+      <a class="btn btn-outline-danger border border-danger border-2" href="{{url_for('/users.settings')}}">Settings</a>
+      <a class="btn btn-outline-danger border border-danger border-2" href="{{url_for('/users.user',id=current_user.id)}}">Profile</a>
+
+      {% else %}
+      <a class="btn btn-outline-danger border border-danger border-2" href="{{url_for('/users.register')}}">Register</a>
+      <a class="btn btn-outline-danger border border-danger border-2" href="{{url_for('/users.login')}}">Login</a>
+      {% endif%}
+    </div>
+
+    {% if current_user.is_authenticated %}
+<div class="d-flex justify-content-start align-items-center">
+    <strong class="badge bg-secondary "> 
+        
+        {% if current_user.username %} 
+        {{current_user.username}}
+        {% else %}
+        {{current_user.email}}
+        {% endif %}
+       
+    </strong>
+    {% endif%}
+ 
+    <ul style="list-style-type: none;">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Developer
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{url_for('about_me')}}">About</a></li>
+        <li><a class="dropdown-item" href="{{url_for('contact')}}">contact</a></li>
+        <li><a class="dropdown-item" href="https://644ba58b21b50b0098ed56ed--glistening-raindrop-72b523.netlify.app/">More</a></li>
+      </ul>
+    </li>
+  </ul>
+    
+
+  </div>
+      
+    </div>
+  </nav>

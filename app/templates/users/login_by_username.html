@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title%}Login{% endblock %}
+
+{% block content %}
+<div class="d-flex  align-items-center justify-content-center  overflow-auto h-75 w-100"  >
+    <div class="bg-secondary w-50 h-75 d-flex  align-items-center justify-content-center  rounded-3 border border-light border-3" style="box-shadow: inset 0px 0px 30px 10px rgb(231, 231, 236);">
+    <div class="d-flex justify-content-between w-100 mx-5">
+        <form action="" method="POST">
+            {{username_form.csrf_token}}
+            {{username_form.username.label(class='form-control-label mb-2 text-light')}}
+            {{username_form.username(class='form-control')}}
+            {{username_form.password.label(class='form-control-label mt-4 text-light')}}
+            {{username_form.password(class='form-control')}}
+            {{username_form.remember.label(class='form-check-lable mt-3 text-light')}}{{username_form.remember(class='form-check-input m-4')}}
+            <div class="d-grid gap-2">
+            <input type="submit" value="Login" class="btn btn-outline-info mt-3  border border-2 border-info">
+        </div>
+        </form>
+
+
+<div>
+        <form action="" method="POST">
+            {{phone_form.csrf_token}}
+            {{phone_form.phone.label(class='form-control-label mb-2 text-light')}}
+            {{phone_form.phone(class='form-control')}}
+            <!-- <input type="hidden" name="login_type" value="phone"> -->
+            <div class="d-grid gap-2">
+            <input type="submit" value="Login"  class="btn btn-outline-info mt-3  border border-2 border-info">
+        </div>
+        </form>
+
+
+        <form action="" method="POST" class="mt-5">
+            {{email_form.csrf_token}}
+            {{email_form.email.label(class='form-control-label mb-2 text-light')}}
+            {{email_form.email(class='form-control')}}
+            <!-- <input type="hidden" name="login_type" value="phone"> -->
+            <div class="d-grid gap-2">
+            <input type="submit" value="Login"  class="btn btn-outline-info mt-3  border border-2 border-info">
+        </div>
+        </form>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    {% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex  align-items-center justify-content-center  overflow-auto h-75 w-100"  >
+<div class="bg-secondary w-50 h-50 d-flex  align-items-center justify-content-center  rounded-3 border border-light border-3" style="box-shadow: inset 0px 0px 30px 10px rgb(231, 231, 236);">
+
+    <form action="" method="POST">
+        {{form.csrf_token}}
+        {{form.phone.label(class='form-control-label mb-2 text-light')}}
+        {{form.phone(class='form-control')}}
+        <div class="d-grid gap-2">
+            <input type="submit" value="Login" class="btn btn-outline-info mt-3  border border-2 border-info">
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex  align-items-center justify-content-center  overflow-auto mt-2 w-100 " style="height:90%" >
+<div class="bg-secondary w-75 h-100 p-5 overflow-auto rounded-3 border border-light border-3" style="box-shadow: inset 0px 0px 30px 10px rgb(117, 117, 246);">
+
+ 
+
+
+
+  <div class="card" style="width: 100%;">
+ 
+    <div class="card-body">
+      <h4 class="card-title">{{post.title}}</h4>
+      <h6 class="card-title d-flex justify-content-between">
+        <div>
+        <span class="badge bg-dark">Author :</span> 
+        <span class="badge bg-dark">{{post.author.username}}</span>
+         <br>
+         <small class="badge bg-info ">Created</small>
+        <small class="badge bg-warning ">{{post.create_at.strftime('%Y-%m-%d %H:%M')}}</small>
+    {% if post.update_at>post.create_at %} 
+    
+    <small class="badge bg-info ">Updated</small> 
+    <small class="badge bg-danger ">{{post.update_at.strftime('%Y-%m-%d %H:%M')}}</small>
+    {% endif %}
+    </div>
+      <div>
+        {% if current_user.is_authenticated %}
+        {% if post.author==current_user %}
+        <a href="{{url_for('/posts.update_post',id=post.id)}}" class="btn btn-info">Update Post</a>
+        <a href="" class="btn btn-danger">Delete Post</a>
+        
+        {% endif %}
+        {% endif%}
+      </div> 
+      </h6>
+      <div class="card-text  ">{{post.content}}</div>
+    </div>
+  </div>
+
+
+
+
+    
+
+    
+</div>
+</div>
+{% endblock %}

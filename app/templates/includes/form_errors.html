@@ -1,0 +1,175 @@
+{% if form and form.phone and form.phone.errors %} {% for error in
+form.phone.errors %}
+<div
+  class="alert alert-danger border border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+  role="alert"
+  style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+>
+  {{error}}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %} {% endif %} {% if phone_form and phone_form.phone and
+phone_form.phone.errors %} {% for error in phone_form.phone.errors %}
+<div
+  class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+  role="alert"
+  style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+>
+  {{error}}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %} {% endif %} {% if form and form.number and form.number.errors %} {%
+for error in form.number.errors %}
+<div
+  class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+  role="alert"
+  style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+>
+  {{error}}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %} {% endif %} {% if form and form.code and form.code.errors %} {% for
+error in form.code.errors %}
+<div
+  class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+  role="alert"
+  style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+>
+  {{error}}
+
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+
+{% endfor%} {% endif %} {% if form and form.username and form.username.errors %}
+{% for error in form.username.errors %}
+<div
+  class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+  role="alert"
+  style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+>
+  {{error}}
+
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+
+{% endfor%} {% endif %} {% if username_form and username_form.username and
+username_form.username.errors %} {% for error in username_form.username.errors
+%}
+<div
+  class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+  role="alert"
+  style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+>
+  {{error}}
+
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+
+{% endfor%} {% endif %} {% if form and form.password and form.password.errors %}
+{% for error in form.password.errors %}
+<div
+  class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+  role="alert"
+  style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+>
+  {{error}}
+
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+
+{% endfor%} {% endif %} {% if username_form and username_form.password and
+username_form.password.errors %} {% for error in username_form.password.errors
+%}
+<div
+  class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+  role="alert"
+  style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+>
+  {{error}}
+
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+
+{% endfor%} {% endif %}
+
+
+{% if email_form and email_form.email and
+  email_form.email.errors %} {% for error in email_form.email.errors
+  %}
+  <div
+    class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+    role="alert"
+    style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+  >
+    {{error}}
+  
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  
+  {% endfor%} {% endif %}
+
+  {% if form and form.email and
+    form.email.errors %} {% for error in form.email.errors
+    %}
+    <div
+      class="alert alert-danger border-3 border-danger alert-dismissible fade show w-50 m-auto mt-1 mb-0 text-center"
+      role="alert"
+      style="box-shadow: inset 0px 0px 30px 10px rgb(104, 104, 106)"
+    >
+      {{error}}
+    
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    
+    {% endfor%} {% endif %}
+  

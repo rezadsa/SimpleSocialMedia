@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex  align-items-center justify-content-center  overflow-auto mt-2 w-100 " style="height:90%" >
+<div class="bg-secondary w-75 h-100 p-5 overflow-auto rounded-3 border border-light border-3" style="box-shadow: inset 0px 0px 30px 10px rgb(117, 117, 246);">
+
+    
+    <h3> {{user.username if user.username else 'User name : NoN'}} </h3>
+    <h3>{{user.phone if user.phone_show }}</h3>
+    
+    <hr class="boeder border-light border-4">
+        {% if current_user.is_authenticated and current_user !=user %}
+                {% if follow %}
+                        <form action="{{url_for('/users.unfollow',user_id=user.id)}}" method="POST">
+                            {{form.csrf_token}}
+                            {{form.submit(value='Unfollow',class='btn btn-success')}}
+                        </form>
+                {% else %}
+                        <form action="{{url_for('/users.follow',user_id=user.id)}}" method="POST">
+                            {{form.csrf_token}}
+                            {{form.submit(value='Follow',class='btn btn-primary')}}
+                       </form>
+                {% endif%}
+        {% endif %}
+   
+        {% if not current_user.is_authenticated%}
+        <div class="card">
+            <div class="card-body d-flex justify-content-between fw-bolder text-info">
+                Please Register / login to access all features
+                </div> </div>
+{% endif %}     
+        
+        {% if current_user.is_authenticated and current_user==user %}
+<div class="d-flex justify-content-between">
+        <div>
+            <a href="{{url_for('/users.followers')}}" class="btn btn-primary ">Follower</a>
+            <a href="{{url_for('/users.followed')}}" class="btn btn-primary ">Following</a>
+            <a href="{{url_for('/users.requests',id=user.id)}}" class="btn btn-primary ">Requests</a>
+        </div>
+        
+        <div>
+            <a href="{{url_for('/posts.new',id=current_user.id)}}" class="btn btn-info ">New Post</a>
+
+        </div>
+    </div>     
+        {% endif %}
+
+        <hr class="boeder border-light border-4">
+
+        
+        {% if posts %}
+        
+        {% if user.private==False or (user.private==True and access==True ) or (user==current_user) %}
+        <div class="card">
+        {% for post in posts %}
+       
+            <div class="card-title d-flex justify-content-between  align-items-center border-bottom">
+              <a href="{{url_for('/posts.post',id=post.id)}}" class="btn btn-outline-danger border-0"  >
+                {{post.title}}</a >
+
+                <span class="badge bg-primary  me-3 ">{{post.create_at.strftime('%Y-%m-%d  %H:%M')}}</span>
+           
+            </div>
+
+        {% endfor %}
+         </div>
+        {% endif %}
+        
+        {% endif %}
+    
+        {% if not posts and ( (user.private==True and access==True ) or (user==current_user)) %}
+        <div class="card">
+            <div class="card-body d-flex justify-content-between">
+              
+                There are no posts for this user 
+              
+            </div>
+        </div>
+        {% endif %}
+
+        {% if  user.private==True and access==False and user!=current_user %}
+        <div class="card">
+            <div class="card-body d-flex justify-content-between">
+              
+                This is a private page. To access the content, you have to follow first    
+              
+            </div>
+        </div>
+        {% endif %}
+    
+
+</div>
+</div>
+{% endblock %}

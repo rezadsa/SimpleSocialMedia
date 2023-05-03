@@ -1,0 +1,16 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Create a New Post{% endblock title%}
+
+{% block content %}
+
+<div class="text-info bg-secondary  rounded-3 border shadow-lg m-auto  mt-4  ">
+    <form action="" method="POST" class="m-4">
+        {{form.csrf_token }}
+        {{form.title.label(class='form-control-label mt-3')}}{{form.title(class='form-control')}}
+        {{form.content.label(class='form-control-lable mt-3')}}{{form.content(class='form-control',style='height:300px;')}}
+        <input type="submit" value="Create" class="btn btn-outline-info mt-2 d-block">
+    </form>
+</div>
+{% endblock content%}

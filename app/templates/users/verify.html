@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="d-flex  align-items-center justify-content-center  overflow-auto h-75 w-100"  >
+    <div class="bg-secondary w-50 h-50 d-flex  align-items-center justify-content-center border border-light border-3 rounded-3" style="box-shadow: inset 0px 0px 30px 10px rgb(231, 231, 236);">
+  
+    <form action="" method="POST">
+        {{form.csrf_token}}
+        {{form.number.label(class='form-control-label text-light mb-3')}}
+        {{form.number(class='form-control')}}
+        <div class="d-grid gap-2">
+        <input type="submit" value="Verify" class="btn btn-outline-info  border-3  mt-5 ">
+    </div>
+    </form>
+</div>
+</div>
+{% endblock %}

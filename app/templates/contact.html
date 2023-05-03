@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} Reza Safarkhani{% endblock%}
+
+{% block content %}
+
+   
+<div class="d-flex  align-items-center justify-content-center  overflow-auto mt-2 w-100 " style="height:90%" >
+  <div class="bg-secondary w-75 h-100 p-5 overflow-auto rounded-3 border border-light border-3" style="box-shadow: inset 0px 0px 30px 10px rgb(230, 245, 186);">
+
+
+<form action="" method="POST">
+  {{form.csrf_token}}
+
+  {{form.email(class='form-control ',placeholder='Your Email Addresss')}}
+  {{form.name(class='form-control my-3',placeholder='Name / Organization')}}
+
+  {{form.title(class='form-control ',placeholder='Title')}}
+  {{form.message(class='form-control my-3 ',rows='10',placeholder='Message')}}
+  <input type="submit" value="Send Email" class="btn btn-primary">
+ 
+</form>
+
+
+    </div>/<div>
+
+
+
+{% endblock %}

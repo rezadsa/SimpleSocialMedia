@@ -1,0 +1,73 @@
+<style>
+
+
+.text_container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #22231d;
+}
+
+.text {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text::after {
+  position: absolute;
+  content: "";
+  font-size: 5vw;
+  color: rgb(109, 92, 92);
+  opacity: 0;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  animation: change-text 10s linear infinite;
+}
+
+@keyframes change-text {
+  10% {
+    opacity: 1;
+    content: "Server error";
+    color: #9a4295;
+    letter-spacing: 10px;
+  }
+
+  35% {
+    content: "error 500";
+    color: #2a44b9;
+    opacity: 1;
+    letter-spacing: 10px;
+  }
+
+  60% {
+    content: "server error ";
+    color: #c1b39f;
+    opacity: 1;
+    letter-spacing: 10px;
+  }
+
+  85% {
+    content: "error 500";
+    color: #460bcf;
+    opacity: 1;
+    letter-spacing: 10px;
+  }
+
+  0%,
+  25%,
+  50%,
+  75%,
+  100% {
+    opacity: 0;
+    letter-spacing: 0;
+    color: #fff;
+    content: "";
+  }
+}
+</style>
