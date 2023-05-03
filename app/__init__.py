@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,flash
-from config import DevConfig
+from config import DevConfig,ProdConfig
 from flask_migrate import Migrate
 from sqlalchemy import desc
 from app.users.models import User,Code,Follow
