@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 8649835971df
+Revision ID: 4e43b8e7aa2b
 Revises: 
-Create Date: 2023-05-01 16:04:23.657119
+Create Date: 2023-05-05 21:19:28.121371
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8649835971df'
+revision = '4e43b8e7aa2b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,11 +21,14 @@ def upgrade():
     op.create_table('code',
     sa.Column('number', sa.Integer(), nullable=False),
     sa.Column('expire', sa.DateTime(), nullable=False),
-    sa.Column('phone', sa.String(length=13), nullable=False),
+    sa.Column('phone', sa.String(length=13), nullable=True),
+    sa.Column('email', sa.String(length=60), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('create_at', sa.DateTime(), nullable=True),
     sa.Column('update_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email'),
     sa.UniqueConstraint('phone')
     )
     op.create_table('follow',
@@ -44,6 +47,7 @@ def upgrade():
     sa.Column('login_attempt', sa.Integer(), nullable=True),
     sa.Column('private', sa.Boolean(), nullable=True),
     sa.Column('phone_show', sa.Boolean(), nullable=True),
+    sa.Column('email', sa.String(length=60), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('create_at', sa.DateTime(), nullable=True),
     sa.Column('update_at', sa.DateTime(), nullable=True),

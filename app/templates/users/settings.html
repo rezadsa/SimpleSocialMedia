@@ -52,18 +52,32 @@ aria-label="Close"
       <div class="card-body">
         <p class="card-title text-light badge bg-primary d-block fs-6">Update </p>
         <hr>
-<form action="" method="POST">
-  {{form.csrf_token}}
-  
-  <!-- {{form.username.label(class='form-control-label')}} -->
-  {{form.email(class='form-control ',placeholder='Email Addresss')}}
-  {{form.phone(class='form-control  my-3 ',placeholder='Phone Number')}}
 
-  {{form.username(class='form-control ',placeholder='User Name')}}
-  <!-- {{form.password.label(class='form-control-label')}} -->
-  {{form.password(class='form-control my-3',placeholder='Password')}}
-  <!-- {{form.verify_pass.label(class='form-control-label')}} -->
-  {{form.verify_pass(class='form-control',placeholder='Confirm password')}}
+        <form action="" method="POST">
+          {{email_form.csrf_token}}
+          <div class="d-flex" >
+          {{email_form.email(class='form-control ',placeholder='Email Addresss')}}          
+          <input type="submit" value="Update" class="btn btn-outline-success border-3 ">
+        </div>
+        </form>
+        <hr>
+        <form action="" method="POST">
+          {{phone_form.csrf_token}}
+          <div class="d-flex" >
+          {{phone_form.phone(class='form-control  ',placeholder='Phone Number')}}          
+          <input type="submit" value="Update" class="btn btn-outline-success border-3 ">
+        </div>
+        </form>
+        <hr>
+
+<form action="" method="POST">
+  {{username_form.csrf_token}}
+  
+  {{username_form.username(class='form-control ',placeholder='User Name')}}
+ 
+  {{username_form.password(class='form-control my-3',placeholder='Password')}}
+
+  {{username_form.verify_pass(class='form-control',placeholder='Confirm password')}}
   <div class="d-grid gap-2" >
   <input type="submit" value="Update" class="btn btn-outline-danger border-3 mt-4 ">
 </div>

@@ -1,6 +1,7 @@
 from flask import Blueprint,redirect,render_template,session,url_for,flash
 from app.users.forms import RegistrationForm,ValidateForm,UpdateProfileForm,LoginPhoneForm
 from app.users.forms import FolowForm,LoginUsernameForm,AccessForm,EmailForm,EmailLoginForm
+from app.users.forms import EmailUpdateForm,PhoneUpdateForm
 from app.users.models import User,Code,Follow
 from app.users.twilio import send_message
 from app.users.mail import send_email
@@ -23,7 +24,7 @@ def register():
         title='noreplay@reza.com'
         body=f'your verification code is   {verify_code}'
         email=email_form.email.data
-        send_email(title=title,body=body,email=email)
+        # send_email(title=title,body=body,email=email)
         code=Code(number=verify_code,email=email,
                   expire=datetime.datetime.now()+datetime.timedelta(minutes=10))
         
@@ -32,6 +33,8 @@ def register():
 
         expire=code.expire.strftime('%H:%M:%S')
         flash(f'Your Verify Code will be expired after 10 minutes on {expire}','info')
+        flash(f'due to Message API charge me for every message I deactived this service / your code is  {verify_code}','primary')
+
         return redirect(url_for('/users.verify_email_register'))
 
 
@@ -77,8 +80,7 @@ def verify_email_register():
         if code:
             if code.expire>datetime.datetime.now():
                 if str(code.number)==str(form.number.data):
-                    default_phone='+447111111111'
-                    user=User(phone=default_phone,email=email)
+                    user=User(email=email)
                     db.session.add(user)
                     db.session.commit()
                     flash(f'{email}  Registered Successfully ','success')
@@ -139,7 +141,7 @@ def login():
                     title='noreplay@reza.com'
                     body=f'your verification code is   {verify_code}'
                     email=email_form.email.data
-                    send_email(title=title,body=body,email=email)
+                    # send_email(title=title,body=body,email=email)
                     code=Code(number=verify_code,email=email,
                     expire=datetime.datetime.now()+datetime.timedelta(minutes=10))
         
@@ -148,6 +150,8 @@ def login():
 
                     expire=code.expire.strftime('%H:%M:%S')
                     flash(f'Your Verify Code will be expired after 10 minutes on {expire}','info')
+                    flash(f'due to Message API charge me for every message I deactived this service / your code is  {verify_code}','primary')
+
                     return redirect(url_for('/users.verify_email_login'))
                     
     
@@ -222,7 +226,7 @@ def verify_email_login():
                     login_user(user)
                     current_user.login_attempt=0
                     db.session.commit()
-                    name=current_user.username if current_user.username else current_user.phone
+                    name=current_user.username if current_user.username else current_user.email
                     flash(f'{name} Welcome','success')
                     return redirect(url_for('home'))
                 else:
@@ -236,6 +240,7 @@ def verify_email_login():
 
 
 
+ 
 
 
 
@@ -279,68 +284,195 @@ def logout():
 @blueprint.route('/settings',methods=['POST','GET'])
 @login_required
 def settings():
-    form=UpdateProfileForm()
+    username_form=UpdateProfileForm()
     access_form=AccessForm()
+    phone_form=PhoneUpdateForm()
+    email_form=EmailUpdateForm()
+
+    if email_form.validate_on_submit():
+        if current_user.phone:
+            verify_code=random.randint(100000,999999)
+            expire=datetime.datetime.now()+datetime.timedelta(minutes=10)
+
+            session['update_email']=email_form.email.data
+
+            title='noreplay@reza.com'
+            body=f'your verification code is   {verify_code}'
+            phone=current_user.phone
+           
+            # send_message(message=verify_code,phone=current_user.phone)
+        
+            code=Code(number=verify_code,email=email_form.email.data, expire=expire,user_id=current_user.id)
+
+            db.session.add(code)
+            db.session.commit()
+
+                                
+            expire=code.expire.strftime('%H:%M:%S')
+            flash(f' Code sent to your phone  {current_user.phone}, Its will be expired after 10 minutes on {expire}','info')
+            flash(f'due to Message API charge me for every message I deactived this service / your code is  {verify_code}','primary')
+            return redirect('/update_email')
+        else:
+            flash('Before change your email address you have to set phone number','danger')
 
 
-    if form.validate_on_submit() :
-                    
-                    verify_code=random.randint(100000,999999)
+    if phone_form.validate_on_submit():
+        if current_user.email:
+            verify_code=random.randint(100000,999999)
+            expire=datetime.datetime.now()+datetime.timedelta(minutes=10)
+
+            session['update_phone']=phone_form.phone.data
+
+            title='noreplay@reza.com'
+            body=f'your verification code is   {verify_code}'
+            email=current_user.email
+            # send_email(title=title,body=body,email=email)
+            code=Code(number=verify_code,email=email, expire=expire,user_id=current_user.id)
+
+            db.session.add(code)
+            db.session.commit()
+
+                                
+            expire=code.expire.strftime('%H:%M:%S')
+            flash(f' Code sent to your email  {current_user.email}, Its will be expired after 10 minutes on {expire}','info')
+            flash(f'due to Message API charge me for every message I deactived this service / your code is  {verify_code}','primary')
+            return redirect('/update_phone')
+        else:
+            flash('Before change your phone nubmer you have to set Email','danger')
+
+
+
+    if username_form.validate_on_submit() :
+                  verify_code=random.randint(100000,999999)
+                  expire=datetime.datetime.now()+datetime.timedelta(minutes=10)
+
+                  session['username']=username_form.username.data
+                  hashed_password=bcrypt.generate_password_hash(username_form.password.data)
+                  session['hashed_pass']=hashed_password
+
+                  
+                  if current_user.email:  
+                   
                     title='noreplay@reza.com'
                     body=f'your verification code is   {verify_code}'
-                    email=form.email.data
-                    send_email(title=title,body=body,email=email)
-                    code=Code(number=verify_code,email=email,
-                    expire=datetime.datetime.now()+datetime.timedelta(minutes=10))
+                    email=current_user.email
+                    # send_email(title=title,body=body,email=email)
+                    code=Code(number=verify_code,email=email, expire=expire,user_id=current_user.id)
         
                     db.session.add(code)
                     db.session.commit()
 
-                    session['username']=form.username.data
-
-                    hashed_password=bcrypt.generate_password_hash(form.password.data)
-                    session['hashed_pass']=hashed_password
-                    session['phone_update']=form.phone.data
-                    session['email_update']=form.email.data
-
+                                       
                     expire=code.expire.strftime('%H:%M:%S')
-                    flash(f' Code sent to your email, Its will be expired after 10 minutes on {expire}','info')
-                    return redirect('/update_profile')
-    
-                    
-
-
-
-
-
-
-
-    # if form.validate_on_submit():
-    #     rand_num=random.randint(100000,999999)
-    #     # send_message(message=rand_num,phone=current_user.phone)
-    #     # rand_num=3333
-    #     expire=datetime.datetime.now()+datetime.timedelta(minutes=10)
-    #     code=Code(phone=current_user.phone,number=rand_num,expire=expire)
-    #     db.session.add(code)
-    #     db.session.commit()
-    #     session['username']=form.username.data
-    #     hashed_password=bcrypt.generate_password_hash(form.password.data)
-    #     session['hashed_pass']=hashed_password
-      
-    #     expire=expire.strftime('%H:%M:%S')
-    #     flash(f'Your Verify Code will be expired after 10 minutes on {expire}','info')
-    #     return redirect('/update_profile')
+                    flash(f' Code sent to your email  {current_user.email}, Its will be expired after 10 minutes on {expire}','info')
+                    flash(f'due to Message API charge me for every message I deactived this service / your code is  {verify_code}','primary')
+                    return redirect('/update_username')
+                  elif current_user.phone:
+                    # send_message(message=verify_code,phone=current_user.phone)
+                                       
+                    code=Code(phone=current_user.phone,number=verify_code,expire=expire,user_id=current_user.id)
+                    db.session.add(code)
+                    db.session.commit()
+                   
+                    expire=expire.strftime('%H:%M:%S')
+                    flash(f' Code sent to your phone  {current_user.phone}, Its will be expired after 10 minutes on {expire}','info')
+                    flash(f'due to Message API charge me for every message I deactived this service / your code is  {verify_code}','primary')
+                    return redirect('/update_username')
+                  else:
+                      flash('For update/set username & password you must set email or phone','danger')
        
-    # if current_user.username:
-         
+           
     
-    form.username.data=current_user.username
     access_form.private.data=current_user.private
     access_form.phone_show.data=current_user.phone_show
-    form.phone.data=current_user.phone
-    form.email.data=current_user.email
+    username_form.username.data=current_user.username
+    phone_form.phone.data=current_user.phone
+    email_form.email.data=current_user.email
 
-    return render_template('users/settings.html',form=form,access_form=access_form)
+    return render_template('users/settings.html',username_form=username_form,access_form=access_form,phone_form=phone_form,email_form=email_form)
+
+@blueprint.route('/update_username',methods=['GET','POST'])
+@login_required
+def update_username():
+    form=ValidateForm()
+    if form.validate_on_submit():
+        # email=session['email_update']
+        code=Code.query.filter_by(user_id=current_user.id).first()
+        print(code)
+        if code:
+            if code.expire>datetime.datetime.now():
+                if str(code.number)==str(form.number.data):
+                    current_user.username=session['username']
+                    current_user.password=session['hashed_pass']
+                    db.session.commit()
+                    flash(f'{current_user.username}  your profile updated successfuly ','success')
+                    return redirect(url_for('/users.settings'))
+                else:
+                    flash('This code is wrong, try agin','danger')
+            else:
+                flash('Sorry your code is expire, try agin','info')
+                return redirect(url_for('/users.settings'))
+        else:
+            flash('Something worng happend!!! try Agin','info')
+            return redirect(url_for('/users.settings'))
+
+
+
+    return render_template('users/verify.html',form=form)
+
+@blueprint.route('/update_phone',methods=['GET','POST'])
+@login_required
+def update_phone():
+    form=ValidateForm()
+    if form.validate_on_submit():
+        code=Code.query.filter_by(user_id=current_user.id).first()
+        if code:
+            if code.expire>datetime.datetime.now():
+                if str(code.number)==str(form.number.data):
+                    phone=session['update_phone']
+                    current_user.phone=phone
+                    db.session.commit()
+                    flash(f'{current_user.phone}  updated successfuly','success')
+                    return redirect(url_for('/users.settings'))
+                else:
+                    flash('Your varification code is wrong, try again','danger')
+            else:
+                flash('Your varification code expired, try agin','info')
+                return redirect(url_for('/users.settings'))
+        else:
+            flash('Something wrong happend Try agin','warning')
+            return redirect(url_for('/users.settings'))
+
+
+    return render_template('users/verify.html',form=form)
+
+
+@blueprint.route('/update_email',methods=['GET','POST'])
+@login_required
+def update_email():
+    form=ValidateForm()
+    if form.validate_on_submit():
+        code=Code.query.filter_by(user_id=current_user.id).first()
+        if code:
+            if code.expire>datetime.datetime.now():
+                if str(code.number)==str(form.number.data):
+                    email=code.email
+                    current_user.email=email
+                    db.session.commit()
+                    flash(f'{current_user.email}  updated successfuly','success')
+                    return redirect(url_for('/users.settings'))
+                else:
+                    flash('Your varification code is wrong, try again','danger')
+            else:
+                flash('Your varification code expired, try agin','info')
+                return redirect(url_for('/users.settings'))
+        else:
+            flash('Something wrong happend Try agin','warning')
+            return redirect(url_for('/users.settings'))
+
+
+    return render_template('users/verify.html',form=form)
+
 
 @blueprint.route('/access_control',methods=['POST','GET'])
 @login_required
@@ -424,34 +556,9 @@ def unfollow(user_id):
 
 
 
-@blueprint.route('/update_profile',methods=['GET','POST'])
-@login_required
-def update_profile():
-    form=ValidateForm()
-    if form.validate_on_submit():
-        code=Code.query.filter_by(email=current_user.email).first()
-        if code:
-            if code.expire>datetime.datetime.now():
-                if str(code.number)==str(form.number.data):
-                    current_user.username=session['username']
-                    current_user.password=session['hashed_pass']
-                    current_user.email=session['email_update']
-                    current_user.phone=session['phone_update']
-                    db.session.commit()
-                    flash(f'{current_user.username}  your profile updated successfuly ','success')
-                    return redirect(url_for('/users.settings'))
-                else:
-                    flash('This code is wrong, try agin','danger')
-            else:
-                flash('Sorry your code is expire, try agin','info')
-                return redirect(url_for('/users.settings'))
-        else:
-            flash('Something worng happend !!! try Agin','info')
-            return redirect(url_for('/users.settings'))
 
 
 
-    return render_template('users/verify.html',form=form)
 
 
 @blueprint.route('/requests/<int:id>',methods=['GET','POST'])

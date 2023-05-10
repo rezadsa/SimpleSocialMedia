@@ -40,6 +40,12 @@ class EmailForm(FlaskForm):
 class EmailLoginForm(FlaskForm):
      email=EmailField('Email',validators=[DataRequired(),Email()])
 
+     def validate_email(self,email):
+          codes=Code.query.filter_by(email=email.data)
+          if codes:
+               Code.query.filter_by(email=email.data).delete()
+               db.session.commit()
+
      
 
 class ValidateForm(FlaskForm):
@@ -77,41 +83,67 @@ class UpdateProfileForm(FlaskForm):
      username=StringField('User Name ',validators=[DataRequired(),Length(min=4,max=30)])
      password=PasswordField('Password',validators=[DataRequired(),Length(min=4,max=30),EqualTo('verify_pass',message='Passwords must be match')])
      verify_pass=PasswordField('Verify Password')
-     email=EmailField('Email',validators=[DataRequired(),Email()])
-     phone=StringField('Phone Number',validators=[DataRequired(),
-                                                 Length(min=10,max=13,message='phone format : +441234567890,441234567890, 01234567890, 1234567890')])
-    
-     def validate_phone(self,phone):
-        phone='+44'+phone.data.strip()[-10:]
-        codes=Code.query.filter_by(phone=phone)
-        if codes:
-            Code.query.filter_by(phone=phone).delete()
-            db.session.commit()
-
-        user=User.query.filter_by(phone=phone).first()
-        if user and user!=current_user:
-          raise ValidationError(f'{phone} , This phone number already registered ')
-
-     def validate_email(self,email):
-          codes=Code.query.filter_by(email=email.data)
-          if codes:
-               Code.query.filter_by(email=email.data).delete()
-               db.session.commit()
-
-          user=User.query.filter_by(email=email.data).first()
-          if user and user!=current_user:
-               raise ValidationError(f'{email.data} , This email already registered' )
     
      def validate_username(self,username):
           codes=Code.query.filter_by(phone=current_user.phone)
           if codes:
                Code.query.filter_by(phone=current_user.phone).delete()
                db.session.commit()
+          
+          codes=Code.query.filter_by(email=current_user.email)
+          if codes:
+               Code.query.filter_by(email=current_user.email).delete()
+               db.session.commit()
+
+          codes=Code.query.filter_by(user_id=current_user.id)
+          if codes:
+               Code.query.filter_by(user_id=current_user.id).delete()
+               db.session.commit()
 
           user=User.query.filter_by(username=username.data).first()
           if user:
             if user !=current_user :
                raise ValidationError('This username already exist ')
+            
+class EmailUpdateForm(FlaskForm):
+     email=EmailField('Email',validators=[DataRequired(),Email()])
+    
+     def validate_email(self,email):
+          codes=Code.query.filter_by(phone=current_user.phone)
+          if codes:
+               Code.query.filter_by(phone=current_user.phone).delete()
+               db.session.commit()
+          code=Code.query.filter_by(user_id=current_user.id).first()
+          if code:
+               Code.query.filter_by(user_id=current_user.id).delete()
+               db.session.commit()
+
+          user=User.query.filter_by(email=email.data).first()
+          if user and user!=current_user:
+               raise ValidationError(f'{email.data} , This email already registered' )
+          
+class PhoneUpdateForm(FlaskForm):
+     phone=StringField('Phone Number',validators=[DataRequired(),
+                                                 Length(min=10,max=13,message='phone format : +441234567890,441234567890, 01234567890, 1234567890')])
+    
+
+
+     def validate_phone(self,phone):
+          phone='+44'+phone.data.strip()[-10:]
+          codes=Code.query.filter_by(email=current_user.email)
+          if codes:
+               Code.query.filter_by(email=current_user.email).delete()
+               db.session.commit()
+
+          code=Code.query.filter_by(user_id=current_user.id).first()
+          if code:
+               Code.query.filter_by(user_id=current_user.id).delete()
+               db.session.commit()
+
+          user=User.query.filter_by(phone=phone).first()
+          if user and user!=current_user:
+               raise ValidationError(f'{phone} , This phone number already registered ')
+    
 
 
 class AccessForm(FlaskForm):

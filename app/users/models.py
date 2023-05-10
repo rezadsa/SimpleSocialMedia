@@ -30,8 +30,9 @@ class Code(BaseModel):
 
     number=db.Column(db.Integer,nullable=False)
     expire=db.Column(db.DateTime,nullable=False)
-    phone=db.Column(db.String(13),unique=True)
-    email=db.Column(db.String(60),unique=True)
+    phone=db.Column(db.String(13))
+    email=db.Column(db.String(60))
+    user_id=db.Column(db.Integer)
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.phone},{self.number})' 
